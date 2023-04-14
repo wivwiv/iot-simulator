@@ -8,4 +8,4 @@ RUN yarn install --production
 
 COPY . .
 
-CMD ["node", "main.js"]
+STOPSIGNAL SIGINT

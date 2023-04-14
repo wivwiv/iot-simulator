@@ -2,6 +2,25 @@
 
 Construct simulated IoT data according to the preset scenarios, and use an MQTT client to generate simulated data based on specified parameters and send it to a specific MQTT broker.
 
+## Run
+
+### Local
+
+Node.js: 14+
+
+```bash
+yarn install
+node main.js
+```
+
+### Docker
+
+```bash
+docker build -t iot-simulator .
+docker run -it --rm --name iot-simulator iot-simulator \
+  node main.js --host broker.emqx.io --sense tesla --count 10
+```
+
 ## CLI Useage
 
 | Option            | Description                                                                                                          |

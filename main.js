@@ -135,8 +135,9 @@ function initMqttClient(arg, index = 0) {
     client.on('connect', () => {
       return resolve(client);
     })
-    client.on('error', () => {
-      return reject(new Error('MQTT client connect error'));
+    client.on('error', (error) => {
+      console.log(new Error('MQTT client connect error', error))
+      process.exit(1);
     })
   })
 }
