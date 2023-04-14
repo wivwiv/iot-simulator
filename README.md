@@ -16,7 +16,8 @@ node main.js
 ### Docker
 
 ```bash
-docker build -t iot-simulator .
+docker pull docker.pkg.github.com/wivwiv/iot-simulator/iot-simulator
+
 docker run -it --rm --name iot-simulator iot-simulator \
   node main.js --host broker.emqx.io --sense tesla --count 10
 ```
