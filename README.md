@@ -20,7 +20,7 @@ iot-simulator --host broker.emqx.io --sense tesla --count 10
 ```bash
 docker pull docker.pkg.github.com/wivwiv/iot-simulator/iot-simulator
 
-docker run -it --rm iot-simulator
+docker run -it --rm docker.pkg.github.com/wivwiv/iot-simulator/iot-simulator bash
 
 > 46550e525157:/app#
 
