@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const yargs = require('yargs');
 const mqtt = require('mqtt');
 const faker = require('faker');
@@ -151,7 +153,7 @@ function startProducers(arg) {
         console.log(`Start producer ${client.options.clientId}...`)
         const producer = setInterval(() => {
           const data = generateData(arg.sense);
-          const topic = `${arg.topic_prefix ? arg.topic_prefix + '/' : ''}emqx_mock/${arg.sense}/${client.options.clientId}`;
+          const topic = `${arg.topic_prefix ? arg.topic_prefix + '/' : ''}iot_simulator/${arg.sense}/${client.options.clientId}`;
           const payload = JSON.stringify(data);
           client.publish(topic, payload, { qos: arg.qos, retain: arg.retain }, (err) => {
             if (err) {

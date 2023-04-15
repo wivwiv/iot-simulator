@@ -2,10 +2,10 @@ FROM node:14-alpine
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
+COPY index.js package.json yarn.lock ./
 
-RUN yarn install --production
+RUN yarn install && yarn link
 
-COPY . .
+RUN apk add --no-cache bash
 
-STOPSIGNAL SIGINT
+CMD /bin/bash
