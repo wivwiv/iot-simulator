@@ -151,7 +151,7 @@ function startProducers(arg) {
         const client = await initMqttClient(arg, i);
         console.log(`Start producer ${client.options.clientId}...`)
         const producer = setInterval(() => {
-          const data = generateData(arg.sense);
+          const data = generateData(arg.sense, client.options.clientId);
           const topic = `${arg.topic_prefix ? arg.topic_prefix + '/' : ''}iot_simulator/${arg.sense}/${client.options.clientId}`;
           const payload = JSON.stringify(data);
           client.publish(topic, payload, { qos: arg.qos, retain: arg.retain }, (err) => {
@@ -211,11 +211,17 @@ async function main() {
   await Promise.all(producers);
 }
 
-function generateData(sense) {
+/**
+ * 生成模拟数据
+ * 每个数据的 ID 类型字段只在第一次生成时生成，后续生成的数据都是相同的
+ */
+const idStore = {}
+function generateData(sense, clientId) {
   switch (sense) {
     case 'tesla':
+      idStore[clientId] = idStore[clientId] || faker.vehicle.vin();
       return {
-        vin: faker.vehicle.vin(),
+        vin: idStore[clientId],
         speed: faker.datatype.number({ min: 0, max: 160 }),
         odometer: faker.datatype.number({ min: 0, max: 99999 }),
         soc: faker.datatype.number({ min: 0, max: 100 }),
@@ -236,8 +242,9 @@ function generateData(sense) {
         timestamp: Date.now(),
       };
     case 'logistics':
+      idStore[clientId] = idStore[clientId] || faker.datatype.uuid();
       return {
-        shipment_id: faker.datatype.uuid(),
+        shipment_id: idStore[clientId],
         origin: faker.address.city(),
         destination: faker.address.city(),
         temperature: faker.datatype.number({ min: 0, max: 30 }),
@@ -251,44 +258,51 @@ function generateData(sense) {
         timestamp: new Date(),
       };
     case 'industrial':
+      idStore[clientId] = idStore[clientId] || faker.datatype.uuid();
       return {
-        machine_id: faker.datatype.uuid(),
+        machine_id: fidStore[clientId],
         temperature: faker.datatype.number({ min: 100, max: 300 }),
         pressure: faker.datatype.number({ min: 100, max: 500 }),
         speed: faker.datatype.number({ min: 100, max: 1000 }),
-        timestamp: new Date(),
+        timestamp: Date.now(),
       };
     case 'wind-turbine':
+      idStore[clientId] = idStore[clientId] || faker.datatype.uuid();
       return {
+        turbine_id: idStore[clientId],
         rpm: faker.datatype.number({ min: 0, max: 50 }),
         powerOutput: faker.datatype.number({ min: 0, max: 5000 })
       };
     case 'weather-station':
+      idStore[clientId] = idStore[clientId] || faker.datatype.uuid();
       return {
-        station_id: faker.datatype.uuid(),
+        station_id: idStore[clientId],
         temperature: faker.datatype.number({ min: -50, max: 50 }),
         humidity: faker.datatype.number({ min: 0, max: 100 }),
         pressure: faker.datatype.number({ min: 900, max: 1100 }),
         wind_speed: faker.datatype.number({ min: 0, max: 50 }),
         wind_direction: faker.random.arrayElement(['N', 'S', 'E', 'W']),
-        timestamp: new Date(),
+        timestamp: Date.now(),
       };
     case 'payment':
+      // faker 生成订单 id
+      idStore[clientId] = idStore[clientId] || faker.datatype.uuid();
       return {
-        transaction_id: faker.datatype.uuid(),
+        transaction_id: idStore[clientId],
         merchant_id: faker.datatype.uuid(),
         customer_id: faker.datatype.uuid(),
         amount: faker.datatype.number({ min: 1, max: 10000 }),
         currency: faker.finance.currencyCode(),
-        timestamp: new Date(),
+        timestamp: Date.now(),
       };
     case 'vending-machine':
+      idStore[clientId] = idStore[clientId] || faker.datatype.uuid();
       return {
-        machine_id: faker.datatype.uuid(),
+        machine_id: idStore[clientId],
         product_id: faker.datatype.uuid(),
-        price: faker.datatype.number({ min: 1, max: 100 }),
-        quantity: faker.datatype.number({ min: 1, max: 100 }),
-        timestamp: new Date(),
+        price: faker.datatype.number({ min: 1, max: 1000 }),
+        quantity: faker.datatype.number({ min: 1, max: 1000 }),
+        timestamp: Date.now(),
       };
     default:
       throw new Error(`Unknown sense: ${sense}`);
