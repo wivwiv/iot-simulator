@@ -237,12 +237,12 @@ function generateData(sense) {
       };
     case 'logistics':
       return {
-        shipment_id: faker.random.uuid(),
+        shipment_id: faker.datatype.uuid(),
         origin: faker.address.city(),
         destination: faker.address.city(),
-        temperature: faker.random.number({ min: 0, max: 30 }),
-        humidity: faker.random.number({ min: 0, max: 100 }),
-        weight: faker.random.number({ min: 100, max: 1000 }),
+        temperature: faker.datatype.number({ min: 0, max: 30 }),
+        humidity: faker.datatype.number({ min: 0, max: 100 }),
+        weight: faker.datatype.number({ min: 100, max: 1000 }),
         // TODO 按照一定的车速，在某个区域内行驶
         location: {
           latitude: faker.address.latitude(),
@@ -252,10 +252,10 @@ function generateData(sense) {
       };
     case 'industrial':
       return {
-        machine_id: faker.random.uuid(),
-        temperature: faker.random.number({ min: 100, max: 300 }),
-        pressure: faker.random.number({ min: 100, max: 500 }),
-        speed: faker.random.number({ min: 100, max: 1000 }),
+        machine_id: faker.datatype.uuid(),
+        temperature: faker.datatype.number({ min: 100, max: 300 }),
+        pressure: faker.datatype.number({ min: 100, max: 500 }),
+        speed: faker.datatype.number({ min: 100, max: 1000 }),
         timestamp: new Date(),
       };
     case 'wind-turbine':
@@ -265,29 +265,29 @@ function generateData(sense) {
       };
     case 'weather-station':
       return {
-        station_id: faker.random.uuid(),
-        temperature: faker.random.number({ min: -50, max: 50 }),
-        humidity: faker.random.number({ min: 0, max: 100 }),
-        pressure: faker.random.number({ min: 900, max: 1100 }),
-        wind_speed: faker.random.number({ min: 0, max: 50 }),
+        station_id: faker.datatype.uuid(),
+        temperature: faker.datatype.number({ min: -50, max: 50 }),
+        humidity: faker.datatype.number({ min: 0, max: 100 }),
+        pressure: faker.datatype.number({ min: 900, max: 1100 }),
+        wind_speed: faker.datatype.number({ min: 0, max: 50 }),
         wind_direction: faker.random.arrayElement(['N', 'S', 'E', 'W']),
         timestamp: new Date(),
       };
     case 'payment':
       return {
-        transaction_id: faker.random.uuid(),
-        merchant_id: faker.random.uuid(),
-        customer_id: faker.random.uuid(),
-        amount: faker.random.number({ min: 1, max: 10000 }),
+        transaction_id: faker.datatype.uuid(),
+        merchant_id: faker.datatype.uuid(),
+        customer_id: faker.datatype.uuid(),
+        amount: faker.datatype.number({ min: 1, max: 10000 }),
         currency: faker.finance.currencyCode(),
         timestamp: new Date(),
       };
     case 'vending-machine':
       return {
-        machine_id: faker.random.uuid(),
-        product_id: faker.random.uuid(),
-        price: faker.random.number({ min: 1, max: 100 }),
-        quantity: faker.random.number({ min: 1, max: 100 }),
+        machine_id: faker.datatype.uuid(),
+        product_id: faker.datatype.uuid(),
+        price: faker.datatype.number({ min: 1, max: 100 }),
+        quantity: faker.datatype.number({ min: 1, max: 100 }),
         timestamp: new Date(),
       };
     default:
