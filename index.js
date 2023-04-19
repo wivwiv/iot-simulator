@@ -3,6 +3,7 @@
 const yargs = require('yargs');
 const mqtt = require('mqtt');
 const faker = require('faker');
+const teslaGenerator = require('./generator/tesla');
 
 // 使用 yargs 解析参数
 const argv = yargs
@@ -219,28 +220,7 @@ const idStore = {}
 function generateData(sense, clientId) {
   switch (sense) {
     case 'tesla':
-      idStore[clientId] = idStore[clientId] || faker.vehicle.vin();
-      return {
-        vin: idStore[clientId],
-        speed: faker.datatype.number({ min: 0, max: 160 }),
-        odometer: faker.datatype.number({ min: 0, max: 99999 }),
-        soc: faker.datatype.number({ min: 0, max: 100 }),
-        elevation: faker.datatype.number({ min: -50, max: 5000 }),
-        heading: faker.datatype.number({ min: 0, max: 360 }),
-        accuracy: faker.datatype.number({ min: 0, max: 50 }),
-        power: faker.datatype.number({ min: 0, max: 200 }),
-        shift_state: faker.random.arrayElement(['D', 'P', 'R', 'N']),
-        range: faker.datatype.number({ min: 0, max: 400 }),
-        est_battery_range: faker.datatype.number({ min: 0, max: 400 }),
-        heading: faker.datatype.number({ min: 0, max: 360 }),
-        gps_as_of: Date.now(),
-        // TODO 按照一定的车速，在某个区域内行驶
-        location: {
-          latitude: faker.address.latitude(),
-          longitude: faker.address.longitude(),
-        },
-        timestamp: Date.now(),
-      };
+      return teslaGenerator(clientId);
     case 'logistics':
       idStore[clientId] = idStore[clientId] || faker.datatype.uuid();
       return {
